@@ -9,7 +9,9 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
 public class Musica{
-	
+	private static final boolean Abierto = true;
+	private static final boolean Cerrado = false;
+	private boolean estado;
 	private Clip clip;
 	
 	public Musica() {
@@ -26,8 +28,9 @@ public class Musica{
 	 * @throws LineUnavailableException
 	 * @throws IOException
 	 */
-	public void abrir(AudioInputStream stream) throws LineUnavailableException, IOException {
+	public void abrirClip (AudioInputStream stream) throws LineUnavailableException, IOException {
 		clip.open(stream);
+		estado = Abierto;
 	}
 	
 	/**
@@ -49,6 +52,15 @@ public class Musica{
 	 */
 	public void detener() {
 		clip.stop();
+	}
+	
+	public void cerrarClip(){
+		clip.close();
+		estado = Cerrado;
+	}
+	
+	public boolean getEstado() {
+		return estado;
 	}
 	
 	/**

@@ -23,7 +23,7 @@ import Piezas.Z;
 import Piezas.ZInv;
 
 public class Juego{
-	
+	private static final int VelocidadDeCaidaRapida = 20;
 	protected GUI miVentana;
 	protected Reloj miReloj;
 	protected Grilla miGrillaPrincipal;
@@ -57,6 +57,10 @@ public class Juego{
 	}
 	
 	public void crearPieza(int valorPieza) {
+		//establece la velocidad de caida a la normal
+		this.bajarNormal();
+		
+		//Crea la siguiente pieza que caera
 		switch(valorPieza) {
 		case 0: 
 			tetriminoActual= new Cuadrado(miGrillaPrincipal); 
@@ -81,7 +85,7 @@ public class Juego{
 		    break;
 		}
 		tetriminoSiguiente = rand.nextInt(7);
-		miReloj.setStep(miReloj.getStep());
+		miReloj.setVelocidad(miReloj.getVelocidad());
 	}
 	
 	public synchronized void operar(int operacion) {
@@ -133,7 +137,57 @@ public class Juego{
 	}
 	
 	public void aumentarVelocidad() {
-		miReloj.reducirStep(50);
+		miReloj.aumentarVelocidad(50);
+	}
+	
+	/**
+	 * Inicia la reproduccion de la musica.
+	 */
+	public void correrMusica() {
+		try{
+			AudioInputStream inputStream = null;
+
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("/Musica/Musica.wav"));
+					
+			musica = new Musica();
+			musica.abrirClip(inputStream);
+			musica.iniciar();
+			musica.repetirInfinitamente();
+
+		}catch(IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void quitarMusica() {
+		musica.cerrarClip();
+	}
+	
+	public boolean musicaActiva() {
+		return musica.getEstado();
+	}
+	
+	/**
+	 * Activa la velocidad de caida rapida para un tetrimino.
+	 */
+	public void bajarRapido() {
+		miReloj.setAuxVelocidad(miReloj.getVelocidad());
+		miReloj.setVelocidad(VelocidadDeCaidaRapida);
+	}
+	
+	/**
+	 * restablece la velocidad de caida del tetrimino.
+	 */
+	public void bajarNormal() {
+		miReloj.setVelocidad(miReloj.getAuxVelocidad());
+	}
+	
+	/**
+	 * Este metodo restablece el foco en la ventana principal del juego, para que se pueda seguir juegando con las flechas normalmente y
+	 * no haya que hacerle clic de nuevo para que funcione.
+	 */
+	public void restablecerFocoDeVentana() {
+		miVentana.restablecerFocoDeVentana();
 	}
 	
 	private void moverIzquierda() { 
@@ -254,29 +308,9 @@ public class Juego{
 			}
 		}
 	}
-
+	
 	private void rotar() {
 		tetriminoActual.rotar();
-	}
-	
-	/**
-	 * Inicia la reproduccion de la musica.
-	 */
-	public void correrMusica() {
-		try{
-		 AudioInputStream inputStream = null;
-
-		inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("/Musica/Musica.wav"));
-				
-		musica = new Musica();
-		musica.abrir(inputStream);
-		musica.iniciar();
-		musica.repetirInfinitamente();
-
-		}catch(IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
 }

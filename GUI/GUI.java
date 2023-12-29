@@ -18,7 +18,7 @@ public class GUI extends JFrame {
 	protected Juego miJuego;
 	protected JLabel [][] matrizPrincipal;
 	protected JPanel contentPane;
-	private boolean entrar = true;;
+	private boolean bajarRapido = false;
 	
 	public GUI(int filas, int columnas) {
 		initGUI(filas, columnas);
@@ -56,17 +56,15 @@ public class GUI extends JFrame {
 					miJuego.operar(miJuego.rotar);			
 				}
 				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-					if (entrar == true) {
-						miJuego.getReloj().setAuxStep(miJuego.getReloj().getStep());
-						entrar = false;}
-					
-					miJuego.getReloj().setStep(20);	
+					if (bajarRapido == false) {
+						miJuego.bajarRapido();
+						bajarRapido = true;}	
 				}
 			}
 			public void keyReleased(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-					miJuego.getReloj().setStep(miJuego.getReloj().getAuxStep());
-					entrar = true;
+					miJuego.bajarNormal();
+					bajarRapido = false;
 				}
 			}
 		});	
@@ -85,5 +83,9 @@ public class GUI extends JFrame {
 		String s= "Juego terminado. Su puntaje es de: " + miJuego.getPuntaje() + ". Duracion de la partida: " + miJuego.getTiempo();
 		JOptionPane.showMessageDialog(contentPane, s, "Juego terminado", 1);
 		System.exit(1);
+	}
+	
+	public void restablecerFocoDeVentana() {
+		this.requestFocus();
 	}
 }
