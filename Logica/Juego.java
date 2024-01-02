@@ -132,10 +132,17 @@ public class Juego{
 		miVentana.actualizarCelda(fila, colum, imagen);
 	}
 	
+	/**
+	 * Retorna un valor que indica cual sera el tetrimino siguiente al actual.
+	 * @return valor representativo al tetrimino siguiente.
+	 */
 	public int getTetriminoSiguiente() {
 		return tetriminoSiguiente;
 	}
 	
+	/**
+	 * Aumenta la velocidad de caida de los tetriminos.
+	 */
 	public void aumentarVelocidad() {
 		miReloj.aumentarVelocidad(50);
 	}
@@ -163,6 +170,10 @@ public class Juego{
 		musica.cerrarClip();
 	}
 	
+	/**
+	 * Consulta si la musica esta corriendo.
+	 * @return True si la musica esta sonando.
+	 */
 	public boolean musicaActiva() {
 		return musica.getEstado();
 	}

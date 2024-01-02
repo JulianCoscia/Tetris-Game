@@ -15,7 +15,6 @@ public class Launcher {
 				juego.setVentanaInformacion(info);
 				juego.iniciarJuego();
 				frame.setVisible(true);
-				frame.setSize(400, 700);
 			}
 		});
 	}
